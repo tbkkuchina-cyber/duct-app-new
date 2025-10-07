@@ -2499,7 +2499,7 @@ function addObject(item, type, pos) {
         case '可変角度エルボ': newObj = new AdjustableElbow(pos.x, pos.y, options); break;
         case 'T字管レジューサー': newObj = new TeeReducer(pos.x, pos.y, options); break;
         case 'Y字管レジューサー': newObj = new YBranchReducer(pos.x, pos.y, options); break;
-        case '繝ｬ繧ｸ繝･繝ｼ繧ｵ繝ｼ': newObj = new Reducer(pos.x, pos.y, options); break;
+        case 'レジューサー': newObj = new Reducer(pos.x, pos.y, options); break;
         case 'ダンパー': newObj = new Damper(pos.x, pos.y, options); break;
     }
     if (newObj) {
@@ -2572,7 +2572,7 @@ function buildFittingsEditor() {
             const isTeeYReducer = category.includes('レジューサー') && (category.includes('Y字管') || category.includes('T字管'));
             const isAdjElbow = category.includes('可変角度エルボ');
             const isSimpleElbow = (category.includes('90°エルボ') || category.includes('45°エルボ'));
-            const isSimpleReducer = category === '繝ｬ繧ｸ繝･繝ｼ繧ｵ繝ｼ';
+            const isSimpleReducer = category === 'レジューサー';
             const isDamper = category === 'ダンパー';
 
             if (isTeeYReducer) {
@@ -2582,7 +2582,7 @@ function buildFittingsEditor() {
             } else if (isAdjElbow) {
                 isAutoNamed = true;
                 autoNameType = 'AdjElbow';
-                nameValue = `D${item.diameter || ''} ${item.angle || ''}ﾂｰ`;
+                nameValue = `D${item.diameter || ''} ${item.angle || ''}°`;
             } else if (isSimpleElbow) {
                 isAutoNamed = true;
                 autoNameType = 'Elbow';
