@@ -1343,8 +1343,9 @@ function findSnapPoint(worldPos) {
 // キャンバスの描画と操作
 // =================================================================================
 function resizeCanvas() {
-    canvas.width = canvas.parentElement.clientWidth;
-    canvas.height = canvas.parentElement.clientHeight;
+    // Canvasの表示サイズをCanvasの描画サイズに設定
+    canvas.width = canvas.clientWidth;
+    canvas.height = canvas.clientHeight;
     draw();
 }
 
