@@ -2616,6 +2616,7 @@ function buildFittingsEditor() {
 
             // Set up auto-naming and auto-width for inputs
             const nameInput = tr.querySelector('[data-prop="name"]');
+            console.log('nameInput:', nameInput, 'readonly:', nameInput?.readOnly); // デバッグログ追加
             
             const adjustNameInputWidth = () => {
                 const span = document.createElement('span');
@@ -2656,6 +2657,7 @@ function buildFittingsEditor() {
             
             if (isAutoNamed) {
                 const d1Input = tr.querySelector('[data-prop="diameter"]');
+                console.log('Damper d1Input:', d1Input); // デバッグログ追加
                 let updateName;
 
                 switch (autoNameType) {
@@ -2679,6 +2681,10 @@ function buildFittingsEditor() {
                         updateName = () => { nameInput.value = `D${d1Input.value || '?'}-${d2Input_R.value || '?'}`; adjustNameInputWidth(); };
                         [d1Input, d2Input_R].forEach(input => input?.addEventListener('input', updateName));
                         break;
+                    case 'Damper': // ここから追加
+                        updateName = () => { nameInput.value = `VD${d1Input.value || ''}`; adjustNameInputWidth(); };
+                        d1Input?.addEventListener('input', updateName);
+                        break; // ここまで追加
                 }
             }
         });
