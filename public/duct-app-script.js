@@ -2594,7 +2594,7 @@ function buildFittingsEditor() {
             } else if (isDamper) {
                 isAutoNamed = true;
                 autoNameType = 'Damper';
-                nameValue = `VD${item.diameter || ''} L${item.length || ''}`;
+                nameValue = `VD${item.diameter || ''}`;
             }
 
             let cells = `<td class="p-2"><input type="text" value="${nameValue}" class="p-1 border rounded min-w-[50px]" data-prop="name" ${isAutoNamed ? 'readonly style="background-color: #e9e9e9;"' : ''}></td>
@@ -2734,7 +2734,7 @@ function addFitting(category) {
         newItem.diameter2 = 100;
         newItem.name = `D${newItem.diameter}-${newItem.diameter2}`;
     } else if (category === 'ダンパー') {
-        newItem.name = `VD${newItem.diameter} L${newItem.length}`;
+        newItem.name = `VD${newItem.diameter}`;
     }
     
     fittings[category].push(newItem);
