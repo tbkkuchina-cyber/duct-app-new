@@ -144,6 +144,10 @@ const camera = {
     y: 0,
     zoom: 1 / (1.2 * 1.2) // デフォルトのズームレベルを調整
 };
+let currentZoom = camera.zoom; // 現在のズームレベルを追跡
+let currentFontSize = 18 / camera.zoom; // 現在のフォントサイズ
+let currentLineWidth = 1 / camera.zoom; // 現在の線幅
+let currentFontSize16 = 16 / camera.zoom; // 基準フォントサイズ16px
 const pan = {
     isPanning: false,
     startX: 0,
@@ -284,7 +288,7 @@ class StraightDuct extends DuctPart {
         }
 
         ctx.fillStyle = '#1e293b';
-        ctx.font = `${18 / camera.zoom}px sans-serif`;
+        ctx.font = `${currentFontSize}px sans-serif`;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         
@@ -325,8 +329,8 @@ class StraightDuct extends DuctPart {
     drawCenterline(ctx) {
         ctx.beginPath();
         ctx.strokeStyle = '#334155';
-        ctx.lineWidth = 1 / camera.zoom;
-        ctx.setLineDash([5 / camera.zoom, 5 / camera.zoom]);
+        ctx.lineWidth = currentLineWidth;
+        ctx.setLineDash([5 / camera.zoom, 5 / camera.zoom]); // ここはズームに応じて変化させる
         ctx.moveTo(-this.length / 2, 0);
         ctx.lineTo(this.length / 2, 0);
         ctx.stroke();
@@ -396,7 +400,7 @@ class Elbow90 extends DuctPart {
         }
         
         ctx.fillStyle = '#1e293b';
-        ctx.font = `${16 / camera.zoom}px sans-serif`;
+        ctx.font = `${currentFontSize16}px sans-serif`;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'bottom';
         const text = `D${this.diameter} L:${this.legLength}`;
@@ -430,7 +434,7 @@ class Elbow90 extends DuctPart {
     drawCenterline(ctx) {
         ctx.beginPath();
         ctx.strokeStyle = '#334155';
-        ctx.lineWidth = 1 / camera.zoom;
+        ctx.lineWidth = currentLineWidth;
         ctx.setLineDash([5 / camera.zoom, 5 / camera.zoom]);
         ctx.moveTo(0, this.legLength);
         ctx.lineTo(0, 0);
@@ -513,7 +517,7 @@ class AdjustableElbow extends DuctPart {
         
         // Add text
         ctx.fillStyle = '#1e293b';
-        ctx.font = `${16 / camera.zoom}px sans-serif`;
+        ctx.font = `${currentFontSize16}px sans-serif`;
         ctx.textAlign = 'center';
         const text = `D${this.diameter} L:${this.legLength}`;
         const currentAngle = this.isFlipped ? -this.angle : this.angle;
@@ -560,7 +564,7 @@ class AdjustableElbow extends DuctPart {
     drawCenterline(ctx) {
         ctx.save();
         ctx.setLineDash([5 / camera.zoom, 5 / camera.zoom]);
-        ctx.lineWidth = 1 / camera.zoom;
+        ctx.lineWidth = currentLineWidth;
         ctx.strokeStyle = '#334155';
         this.drawLegs(ctx).stroke();
         ctx.setLineDash([]);
@@ -693,7 +697,7 @@ class TeeReducer extends DuctPart {
         }
         
         ctx.fillStyle = '#1e293b';
-        ctx.font = `${16 / camera.zoom}px sans-serif`;
+        ctx.font = `${currentFontSize16}px sans-serif`;
         ctx.textAlign = 'center';
         
         // Main pipe text
@@ -739,7 +743,7 @@ class TeeReducer extends DuctPart {
         const branchY = this.isFlipped ? this.branchLength : -this.branchLength;
         ctx.beginPath();
         ctx.strokeStyle = '#334155';
-        ctx.lineWidth = 1 / camera.zoom;
+        ctx.lineWidth = currentLineWidth;
         ctx.setLineDash([5 / camera.zoom, 5 / camera.zoom]);
         ctx.moveTo(-this.length / 2, 0);
         ctx.lineTo(this.length / 2, 0);
@@ -861,7 +865,7 @@ class YBranch extends DuctPart {
 
         // Add text
         ctx.fillStyle = '#1e293b';
-        ctx.font = `${16 / camera.zoom}px sans-serif`;
+        ctx.font = `${currentFontSize16}px sans-serif`;
         ctx.textAlign = 'center';
         
         // Main pipe text
@@ -907,7 +911,7 @@ class YBranch extends DuctPart {
     drawCenterline(ctx) {
         ctx.beginPath();
         ctx.strokeStyle = '#334155';
-        ctx.lineWidth = 1 / camera.zoom;
+        ctx.lineWidth = currentLineWidth;
         ctx.setLineDash([5 / camera.zoom, 5 / camera.zoom]);
         ctx.moveTo(-this.length / 2, 0);
         ctx.lineTo(this.length / 2, 0);
@@ -1046,7 +1050,7 @@ class Reducer extends DuctPart {
         }
 
         ctx.fillStyle = '#1e293b';
-        ctx.font = `${16 / camera.zoom}px sans-serif`;
+        ctx.font = `${currentFontSize16}px sans-serif`;
         ctx.textAlign = 'center';
         
         const angle = (this.rotation % 360 + 360) % 360;
@@ -1066,7 +1070,7 @@ class Reducer extends DuctPart {
     drawCenterline(ctx) {
         ctx.beginPath();
         ctx.strokeStyle = '#334155';
-        ctx.lineWidth = 1 / camera.zoom;
+        ctx.lineWidth = currentLineWidth;
         ctx.setLineDash([5 / camera.zoom, 5 / camera.zoom]);
         ctx.moveTo(-this.length / 2, 0);
         ctx.lineTo(this.length / 2, 0);
@@ -1149,7 +1153,7 @@ class Damper extends DuctPart {
         }
 
         ctx.fillStyle = '#1e293b';
-        ctx.font = `${18 / camera.zoom}px sans-serif`;
+        ctx.font = `${currentFontSize}px sans-serif`;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         ctx.fillText(`D${this.diameter} L${Math.round(this.length)}`, 0, 0);
@@ -1161,7 +1165,7 @@ class Damper extends DuctPart {
     drawCenterline(ctx) {
         ctx.beginPath();
         ctx.strokeStyle = '#334155';
-        ctx.lineWidth = 1 / camera.zoom;
+        ctx.lineWidth = currentLineWidth;
         ctx.setLineDash([5 / camera.zoom, 5 / camera.zoom]);
         ctx.moveTo(-this.length / 2, 0);
         ctx.lineTo(this.length / 2, 0);
@@ -1435,7 +1439,13 @@ function updateStraightRunDimensions() {
 }
 
 function draw() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    // ズームレベルが変更された場合のみ、フォントサイズと線幅を更新
+                    if (currentZoom !== camera.zoom) {
+                        currentFontSize = 18 / camera.zoom; // 基準フォントサイズ18px
+                        currentLineWidth = 1 / camera.zoom; // 基準線幅1px
+                        currentFontSize16 = 16 / camera.zoom; // 基準フォントサイズ16px
+                        currentZoom = camera.zoom;
+                    }    ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.save();
     ctx.translate(canvas.width / 2, canvas.height / 2);
     ctx.scale(camera.zoom, camera.zoom);
@@ -1457,7 +1467,7 @@ function drawGrid() {
     const xOffset = (camera.x * camera.zoom) % gridSize;
     const yOffset = (camera.y * camera.zoom) % gridSize;
     ctx.strokeStyle = '#d1d5db';
-    ctx.lineWidth = 1 / camera.zoom;
+    ctx.lineWidth = currentLineWidth;
     for (let x = -xOffset; x < canvas.width; x += gridSize) {
         ctx.beginPath();
         ctx.moveTo(x/camera.zoom - camera.x + canvas.width/2 , -camera.y + canvas.height/2);
@@ -1477,23 +1487,22 @@ function drawAllSnapPoints() {
     const radius = 8 / camera.zoom;
     const rectSize = 12 / camera.zoom;
 
-    objects.forEach(obj => {
-        // Draw connectors as yellow circles
-        obj.getConnectors().forEach(c => {
-            ctx.beginPath();
-            ctx.arc(c.x, c.y, radius, 0, 2 * Math.PI);
-            ctx.fillStyle = 'rgba(251, 191, 36, 0.7)'; // amber-400
-            ctx.fill();
-            ctx.strokeStyle = 'rgba(217, 119, 6, 0.8)'; // amber-600
-            ctx.lineWidth = 1 / camera.zoom;
-            ctx.stroke();
-        });
-
+            objects.forEach(obj => {
+                // Draw connectors as yellow circles
+                obj.getConnectors().forEach(c => {
+                    ctx.beginPath();
+                    ctx.arc(c.x, c.y, radius, 0, 2 * Math.PI);
+                    ctx.fillStyle = 'rgba(251, 191, 36, 0.7)'; // amber-400
+                    ctx.fill();
+                    ctx.strokeStyle = 'rgba(217, 119, 6, 0.8)'; // amber-600
+                    ctx.lineWidth = currentLineWidth;
+                    ctx.stroke();
+                });
         // Draw intersection points as blue squares
         obj.getIntersectionPoints().forEach(p => {
             ctx.fillStyle = 'rgba(96, 165, 250, 0.7)'; // blue-400
             ctx.strokeStyle = 'rgba(59, 130, 246, 0.8)'; // blue-500
-            ctx.lineWidth = 1 / camera.zoom;
+            ctx.lineWidth = currentLineWidth;
             ctx.fillRect(p.x - rectSize/2, p.y - rectSize/2, rectSize, rectSize);
             ctx.strokeRect(p.x - rectSize/2, p.y - rectSize/2, rectSize, rectSize);
         });
@@ -1521,7 +1530,7 @@ function drawMeasureTool() {
 
     ctx.strokeStyle = '#db2777';
     ctx.fillStyle = '#db2777';
-    ctx.lineWidth = 2 / camera.zoom;
+    ctx.lineWidth = 2 * currentLineWidth;
 
     let p1_info = measurePoints.length > 0 ? measurePoints[0] : currentSnapPoint;
     let p2_info = currentSnapPoint || (measurePoints.length > 0 ? { point: getWorldMousePos(lastMousePos) } : p1_info);
@@ -1546,7 +1555,7 @@ function drawMeasureTool() {
         
         ctx.save();
         ctx.translate(midX, midY);
-        ctx.font = `${18 / camera.zoom}px sans-serif`;
+        ctx.font = `${currentFontSize}px sans-serif`;
         const text = `L: ${distance.toFixed(1)}`;
         const textMetrics = ctx.measureText(text);
         ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
@@ -1558,14 +1567,13 @@ function drawMeasureTool() {
         ctx.restore();
     }
     
-    if (currentSnapPoint) {
-        ctx.strokeStyle = '#4f46e5';
-        ctx.lineWidth = 2 / camera.zoom;
-        ctx.beginPath();
-        ctx.arc(currentSnapPoint.point.x, currentSnapPoint.point.y, 8 / camera.zoom, 0, 2 * Math.PI);
-        ctx.stroke();
-    }
-}
+            if (currentSnapPoint) {
+                ctx.strokeStyle = '#4f46e5';
+                ctx.lineWidth = 2 * currentLineWidth; // 線幅も修正
+                ctx.beginPath();
+                ctx.arc(currentSnapPoint.point.x, currentSnapPoint.point.y, 8 * currentLineWidth, 0, 2 * Math.PI);
+                ctx.stroke();
+            }}
 
 function drawDimensions() {
     ctx.save();
@@ -1613,8 +1621,8 @@ function drawDimensions() {
                 ctx.strokeStyle = '#0284c7'; // sky-600
                 ctx.fillStyle = '#0284c7';
             }
-            ctx.lineWidth = 1.5 / camera.zoom;
-            ctx.font = `${16 / camera.zoom}px sans-serif`;
+            ctx.lineWidth = 1.5 * currentLineWidth;
+            ctx.font = `${currentFontSize16}px sans-serif`;
             ctx.textAlign = 'center';
             ctx.textBaseline = 'bottom';
 
@@ -1658,7 +1666,7 @@ function drawDimensions() {
             const text = value.toFixed(1);
             const textMetrics = ctx.measureText(text);
             ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
-            ctx.fillRect(-textMetrics.width / 2 - (2/camera.zoom), -(16/camera.zoom), textMetrics.width + (4/camera.zoom), (18/camera.zoom));
+            ctx.fillRect(-textMetrics.width / 2 - (2 * currentLineWidth), -(16 * currentLineWidth), textMetrics.width + (4 * currentLineWidth), (18 * currentLineWidth));
             
             if (isStraightRun) {
                 ctx.fillStyle = 'rgba(239, 68, 68, 0.9)';
@@ -1674,7 +1682,7 @@ function drawDimensions() {
 }
     
 function drawArrow(fromX, fromY, toX, toY) {
-    const headlen = 8 / camera.zoom;
+    const headlen = 8 * currentLineWidth;
     const angle = Math.atan2(toY - fromY, toX - fromX);
     
     ctx.beginPath();
